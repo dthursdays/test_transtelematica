@@ -72,7 +72,7 @@ ELEMENTS = {
 }
 
 
-def get_product_skuId(article):
+def get_product_sku(article):
     """Получить skuId продукта."""
     return json.loads(
         article.get_attribute('data-zone-data')
@@ -110,12 +110,12 @@ def highlight(element, effect_time, color, border):
     apply_style(original_style)
 
 
-def get_product_elements(driver, skuId):
+def get_product_elements(driver, sku):
     """Найти article и span товара по skuId в поисковой выдаче."""
     try:
         product_article = driver.find_element(
             By.XPATH,
-            f'//article[contains(@data-zone-data,"{skuId}")]'
+            f'//article[contains(@data-zone-data,"{sku}")]'
         )
         product_span = product_article.find_element(
             By.XPATH,

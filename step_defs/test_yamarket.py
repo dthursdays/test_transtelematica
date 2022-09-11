@@ -6,7 +6,7 @@ import time
 from pytest_bdd import given, parsers, scenario, then, when
 from selenium.common.exceptions import NoSuchElementException
 
-from .utils import (ELEMENTS, get_product_elements, get_product_skuId,
+from .utils import (ELEMENTS, get_product_elements, get_product_sku,
                     highlight, move_to, scroll_down)
 
 
@@ -18,7 +18,6 @@ def test_start():
 @given('пользователь заходит на yandex.ru', target_fixture='start_time')
 def get_page_yandex(driver, log):
     log.info('Тест запущен')
-
     driver.get('http://www.yandex.ru')
     log.info('Пользователь заходит на yandex.ru')
     return time.time()
@@ -38,7 +37,7 @@ def press_button_market(driver, log):
 def input_search(driver, log):
     input = driver.find_element(*ELEMENTS['market_search_input'])
     highlight(input, 1, 'blue', 5)
-    input.send_keys("смартфоны")
+    input.send_keys('смартфоны')
 
     log.info('Пользователь вводит «Смартфоны» в поле поиска')
 
@@ -138,7 +137,7 @@ def press_apply_filters_button(driver, log):
 @given(
     'пользователь считает число смартфонов '
     'на странице, запоминает последний смартфон',
-    target_fixture='skuId'
+    target_fixture='sku'
 )
 def remember_product(driver, log):
     time.sleep(2)
@@ -152,7 +151,7 @@ def remember_product(driver, log):
     highlight(articles[-1], 5, 'blue', 5)
 
     log.info(f'Количество смартфонов на странице: {len(articles)}')
-    return get_product_skuId(articles[-1])
+    return get_product_sku(articles[-1])
 
 
 @when(
@@ -173,12 +172,12 @@ def press_sort_button(driver, sort_type, log):
 
 
 @then('пользователь находит смартфон в выдаче и нажимает на его название')
-def find_product(driver, skuId, log):
+def find_product(driver, sku, log):
     while True:
         time.sleep(2)
         scroll_down(driver)
         time.sleep(1)
-        article, span = get_product_elements(driver, skuId)
+        article, span = get_product_elements(driver, sku)
         if article:
             break
 
@@ -209,7 +208,8 @@ def get_raiting(driver, log, start_time):
         raiting = driver.find_element(
             *ELEMENTS['product_page_raiting_badge']
         )
-        highlight(raiting, 3, 'blue', 5)
+        highlight(raiting, 5, 'blue', 5)
+
         log.info(f'Рейтинг смартфона: {raiting.text}')
     except NoSuchElementException:
         log.warning('На странице отсутствует рейтинг смартфона')
