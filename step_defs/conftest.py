@@ -30,7 +30,7 @@ def log():
     """Фикстура для логов."""
     logger = logging.getLogger(__name__)
     handler = RotatingFileHandler(
-        'main.log', maxBytes=50000000, backupCount=5
+        'main.log', maxBytes=50000000, backupCount=5, encoding="utf-8"
     )
     handler.setFormatter(logging.Formatter(u'[%(levelname)s] %(message)s'))
     logger.addHandler(handler)
