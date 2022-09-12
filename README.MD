@@ -27,5 +27,5 @@ pip install -r requirements.txt
 ```
 Запустить тест
 ```
-pytest
+pytest -rP
 ```
