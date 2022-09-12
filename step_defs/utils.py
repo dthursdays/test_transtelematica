@@ -6,9 +6,17 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 ELEMENTS = {
-    'market_main_button': (By.XPATH, '//a[@data-id="market"]'),
+    'ya_all_services_button': (
+        By.XPATH,
+        '//a[@class="home-link2 services-pinned__item services-pinned__all"]'
+    ),
+    'market_main_button': (
+        By.XPATH,
+        '//a[contains(@href, "market.yandex.ru")]'
+    ),
     'market_search_input': (By.ID, 'header-search'),
     'market_search_button': (By.XPATH, '//button[@data-r="search-button"]'),
     'market_all_filters_button': (
@@ -70,6 +78,12 @@ ELEMENTS = {
         '(//span[@data-auto="rating-badge-value"])[2]'
     )
 }
+
+
+def press_down_arrow(driver, times=1):
+    """Нажать стрелку вниз на клавиатуре."""
+    for _ in range(times):
+        ActionChains(driver).send_keys(Keys.SPACE).perform()
 
 
 def get_product_sku(article):

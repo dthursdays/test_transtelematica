@@ -7,7 +7,7 @@ from pytest_bdd import given, parsers, scenario, then, when
 from selenium.common.exceptions import NoSuchElementException
 
 from .utils import (ELEMENTS, get_product_elements, get_product_sku,
-                    highlight, move_to, scroll_down)
+                    highlight, move_to, press_down_arrow, scroll_down)
 
 
 @scenario('../feature/yamarket.feature', 'Поиск смартфона на ЯндексМаркете')
@@ -15,16 +15,21 @@ def test_start():
     pass
 
 
-@given('пользователь заходит на yandex.ru', target_fixture='start_time')
+@given('пользователь заходит на ya.ru', target_fixture='start_time')
 def get_page_yandex(driver, log):
     log.info('Тест запущен')
-    driver.get('http://www.yandex.ru')
-    log.info('Пользователь заходит на yandex.ru')
+    driver.get('https://ya.ru/')
+    log.info('Пользователь заходит на ya.ru')
     return time.time()
 
 
 @given('пользователь нажимает на кнопку «Маркет»')
 def press_button_market(driver, log):
+    button = driver.find_element(*ELEMENTS['ya_all_services_button'])
+    highlight(button, 1, 'blue', 5)
+    button.click()
+    time.sleep(1)
+    press_down_arrow(driver)
     button = driver.find_element(*ELEMENTS['market_main_button'])
     highlight(button, 1, 'blue', 5)
     button.click()
